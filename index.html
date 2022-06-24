@@ -1,0 +1,440 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Pokemon Index</title>
+  <meta name="description" content="A Pokemon Index">
+  <meta name="author" content="GC">
+
+  <meta property="og:title" content="A Pokemon Index">
+  <meta property="og:type" content="website">
+  <meta property="og:description" content="A Pokemon Index">
+
+  <style>
+  
+    /* ------------------------------------ *\
+   Config
+\* ------------------------------------ */
+
+:root {
+  --golden-ratio: 1.61803398875;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", sans-serif;
+  --font-serif: "Georgia", serif;
+  --font-monospace: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
+    Liberation Mono, monospace;
+  --color-text: #202020;
+  --color-bg: #f4f4f4;
+  --gutter: 3ch;
+  --leading: 1.4;
+  --spacing-x: var(--gutter);
+  --spacing-y: calc(var(--leading) * var(--golden-ratio) * 0.8ex);
+  --page-padding-x: calc((100vw - min(75ch, 80vw)) / 2);
+  --border-width: 1px;
+  --border-radius: 4px;
+}
+
+/* ------------------------------------ *\
+   Color
+\* ------------------------------------ */
+
+:root {
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  accent-color: var(--color-text);
+  color-scheme: light;
+}
+
+:where(a) {
+  color: var(--color-text);
+}
+
+:where(button) {
+  color: var(--color-bg);
+  background: var(--color-text);
+}
+
+:where(code) {
+  /* Invert the colors on these ones. */
+  color: var(--color-bg);
+  background: var(--color-text);
+}
+
+/* ------------------------------------ *\
+   Typography
+\* ------------------------------------ */
+
+:root {
+  font-size: clamp(
+    100%,
+    calc(100% + 0.25vw),
+    200%
+  ); /* % ensures browser zoom is supported. */
+  font-family: var(--font); /* Use system UI font. */
+  line-height: var(--leading); /* Standard leading for good legibility. */
+  letter-spacing: -0.006em;
+}
+
+:where(a) {
+  text-decoration: underline;
+  text-decoration-thickness: var(--border-width);
+  text-underline-offset: calc(var(--border-width) * 2);
+}
+
+:where(a):hover {
+  text-decoration-thickness: calc(var(--border-width) * 3);
+}
+
+:where(pre, code, kbd, dl, figcaption, abbr, table) {
+  font-family: var(
+    --font-monospace
+  ); /* Differentiate preformatted, code, description, and table text from body text. */
+}
+
+:where(pre, code, kbd, dl, small, figcaption, table) {
+  font-size: 0.8em; /* Make monospace and small text smaller than body text. */
+}
+
+:where(pre code) {
+  display: block; /* Define block code. */
+  font-size: 1em; /* Prevent cascading. */
+}
+
+:where(blockquote) {
+  font-family: var(
+    --font-serif
+  ); /* Differentiate pull quotes from body text. */
+  font-size: 1.5em;
+}
+
+:where(legend, strong, b, th) {
+  font-weight: 700; /* Make non-heading emphasized text less bold than heading text. */
+}
+
+:where(button, select, input, textarea, a) {
+  font-family: inherit; /* Reset font. */
+  font-size: inherit; /* Reset font. */
+  font-weight: 500; /* Emphasize interactive and pullquote text more than body text. */
+}
+
+:where(caption) {
+  text-align: start;
+}
+
+:where(abbr) {
+  text-decoration: underline;
+  text-decoration-style: dotted; /* Differentiate abbreviaions from links. */
+  text-underline-offset: calc(var(--border-width) * 2);
+}
+
+:where(button, label, summary) {
+  cursor: pointer;
+}
+
+:where(blockquote q):before {
+  position: absolute;
+  transform: translateX(-100%);
+}
+
+:where(h1, h2, h3, h4, h5, h6) {
+  font-weight: 900;
+}
+
+/* ------------------------------------ *\
+   Spacing
+\* ------------------------------------ */
+
+:where(h1, h2, h3, h4, h5, h6) {
+  margin-block-end: calc(var(--spacing-y) / 5);
+}
+
+:where(h1, h2, h3, h4, h5, h6, p, figure, form, pre, blockquote, ul, ol, dl, li, details) {
+  margin-block-start: 0;
+}
+
+:where(p, figure, form, fieldset, pre, blockquote, ul, ol, dl, details) {
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+  margin-block-end: var(--spacing-y);
+}
+
+:where(p, figure, form, fieldset, pre, blockquote, ul, ol, dl, details):last-child {
+  margin-block-end: 0;
+}
+
+:where(ul, ol) {
+  margin-inline-start: var(
+    --spacing-x
+  ); /* Unify indent for all lists, and account for at least 2-digit number counter plus a dot for ordered list. */
+  padding: 0; /* Remove extra padding. */
+}
+
+:where(li > ul, li > ol) {
+  margin-block-start: calc(var(--spacing-y) / 5);
+}
+
+:where(li + li) {
+  margin-block-start: calc(var(--spacing-y) / 5);
+}
+
+:where(blockquote p) {
+  margin-block-end: calc(var(--spacing-y) / 2);
+}
+
+:where(input, textarea, select, button, caption, figcaption, dd, th, td) {
+  /* Unify inset spacing on bordered elements. */
+  padding-block: calc(var(--spacing-y) / 6);
+  padding-inline: calc(var(--spacing-x) / 3);
+}
+
+:where(code, kbd) {
+  padding-block: 0.25ex;
+  padding-inline: 0.5ch;
+}
+
+:where(figure, pre) {
+  padding-block-start: calc(
+    var(--spacing-y) / 2.5
+  ); /* Line up top of images/codeblocks with text in an adjacent column layout. */
+}
+
+:where(pre code) {
+  padding-block: var(--spacing-y);
+  padding-inline: var(--spacing-x);
+}
+
+/* ------------------------------------ *\
+   General
+\* ------------------------------------ */
+
+*,
+*:before,
+*:after {
+  font-feature-settings: "kern";
+  font-kerning: normal;
+  -moz-osx-font-smoothing: grayscale !important;
+  -webkit-font-smoothing: antialiased !important;
+  box-sizing: border-box;
+}
+
+:where(input, fieldset, textarea, select, button, kbd, dt, dd, table, th, td) {
+  /* Unify border styles. */
+  border-width: var(--border-width);
+  border-style: solid;
+  border-color: var(--color-text);
+}
+
+:where(input, fieldset, textarea, select, button, kbd) {
+  /* Unify interactive elements border radius. */
+  border-radius: var(--border-radius);
+}
+
+*:focus {
+  outline: calc(var(--border-width) * 2) dashed var(--color-text);
+  outline-offset: var(--border-width);
+}
+
+:where(pre) {
+  white-space: -moz-pre-wrap;
+  white-space: -o-pre-wrap;
+  white-space: pre-wrap;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: break-word;
+}
+
+:where(dl) {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: calc(var(--spacing-x) / 2);
+  row-gap: calc(var(--spacing-y) / 2);
+  align-items: baseline;
+  overflow-x: auto;
+}
+
+:where(dt) {
+  border-color: transparent;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: calc(var(--border-width) * 2);
+}
+
+:where(dd) {
+  margin-inline-start: 0;
+}
+
+:where(label input, label select, label textarea) {
+  inline-size: 100%;
+}
+
+:where(input[type="radio"], input[type="checkbox"]) {
+  inline-size: 1.5ex;
+  block-size: 1.5ex;
+  vertical-align: baseline;
+}
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button;
+  font: inherit;
+}
+
+:where(hr) {
+  block-size: 0;
+  margin-block-start: 4ex;
+  margin-block-end: 4ex;
+  border: 0;
+  border-block-start: 1px dashed var(--color-text);
+}
+
+:where(img) {
+  max-inline-size: 100%;
+  block-size: auto;
+}
+
+:where(figure) {
+  inline-size: 100%;
+  overflow-x: auto;
+  text-align: center;
+}
+
+:where(table) {
+  border-spacing: 0;
+  caption-side: bottom;
+}
+
+:where(details[open] summary) {
+  margin-block-end: calc(var(--spacing-y) / 4);
+}
+
+:where(summary > *) {
+  display: inline;
+  vertical-align: middle;
+}
+
+/* ------------------------------------ *\
+   Auto-detect Dark Mode
+\* ------------------------------------ */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text: #f4f4f4;
+    --color-bg: #101010;
+    color-scheme: dark;
+  }
+}
+
+/* ------------------------------------ *\
+   Page Layout
+   - These are optional.
+   - Remove to do your own layouts.
+\* ------------------------------------ */
+
+body {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  margin: 0;
+  min-block-size: 100vh;
+  min-block-size: 100dvb;
+}
+
+body > * {
+  inline-size: 100vw;
+}
+
+:where(main) {
+  padding-block: clamp(
+    calc(var(--spacing-y) * 1),
+    10vw,
+    calc(var(--spacing-y) * 2)
+  );
+  padding-inline: var(--page-padding-x);
+}
+
+:where(body > header, body > footer) {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--spacing-x);
+  row-gap: calc(var(--spacing-y) / 2);
+
+  > *:only-child {
+    margin-block: 0;
+    margin-inline: auto;
+  }
+}
+
+:where(body > footer) {
+  padding-block: clamp(
+      calc(var(--spacing-y) * 1),
+      10vw,
+      calc(var(--spacing-y) * 2)
+    )
+    clamp(calc(var(--spacing-y) * 2), 10vw, calc(var(--spacing-y) * 6));
+  padding-inline: var(--page-padding-x);
+  border-block-start: 1px solid;
+}
+
+:where(body > header) {
+  padding-block: clamp(
+      calc(var(--spacing-y) * 2),
+      10vw,
+      calc(var(--spacing-y) * 6)
+    )
+    clamp(calc(var(--spacing-y) * 1), 10vw, calc(var(--spacing-y) * 2));
+  padding-inline: var(--page-padding-x);
+  border-block-end: 1px solid;
+
+  h1 {
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  a {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  h1 a,
+  > a {
+    display: block;
+    font-size: 1.35em;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0.02em;
+  }
+
+  > nav {
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: var(--spacing-x);
+      row-gap: calc(var(--spacing-y) / 2);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      font-size: 0.9em;
+    }
+  }
+}
+
+    
+  </style>
+</head>
+
+<body>
+  <header>
+  <h1><a href=""><em>Pokemon Index</em></a></h1>
+</header>
+  <main>
+    <p>A simple pokemon index of data json files and images to play with for devving.</p>
+  </main>
+</body>
+</html>
